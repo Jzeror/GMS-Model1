@@ -1,3 +1,4 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -27,7 +28,7 @@ table, tr, th, td {
 		</tr>
 		<tr id="main-tab-layout-tr">
 			<td style="width: 80%"><p style="font-size:900% " align="center">MyPage</p></td>
-			<td><a href="../home/main.html"><p align="center">�α׾ƿ�</p></a>
+			<td><a href="../home/main.html"><p align="center">로그아웃</p></a>
 		</tr>
 		<tr class="height-140">
 			<td class="width-80pt" colspan="2"></td>
