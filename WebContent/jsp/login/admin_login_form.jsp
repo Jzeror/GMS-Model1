@@ -20,14 +20,14 @@
 			<td align="center">
 		<div id="admin-login-layout">
 			<h1>로그인</h1>
-			<form id=" admin-login-form" action="../../main.jsp">
-				ADMIN-ID:<br>
-				<input type="text" name="ADMIN-ID" value="aa">
+			<form id=" admin-login-form" action="admin_login_result.jsp">  
+				admin-id:<br>
+				<input type="text" name="adminid"/>
 				<br>
-				ADMIN-PASS:<br>
-				<input type="text" name="ADMIN-PASS" value="bb">
+				admin-pass:<br>
+				<input type="text" name="adminpass"> 
 				<br><br>
-				<input type="submit" >
+				<input type="submit" value="저언송" >
 			</form>
 		</div>
 			</td>
