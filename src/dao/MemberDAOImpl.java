@@ -1,50 +1,44 @@
 package dao;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 
 import domain.MemberBean;
+import enums.Vendor;
+import factory.DatabaseFactory;
 import pool.DBConstant;
+import service.MemberServiceImpl;
 
 public class MemberDAOImpl implements MemberDAO {
-	Statement stmt;
-	Connection conn;
 	private static MemberDAO instance = new MemberDAOImpl();
-
-	public static MemberDAO getInstance() {
-		return instance;
-	}
-	private MemberDAOImpl() {
-		try {
-			Class.forName(DBConstant.DB_DRIVER);
-			conn = DriverManager.getConnection(DBConstant.CONNECTION_URL,
-					DBConstant.UERNAME, DBConstant.PASSWORD);
-			stmt = conn.createStatement();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
+	public static MemberDAO getInstance() {return instance;}
+	private MemberDAOImpl() {}
 
 	@Override
-	public void insertName(String name) {
-		System.out.println(name);
-
+	public void insertMemId(MemberBean mm) {
+		try {
+			DatabaseFactory.createDatabase(
+					Vendor.ORACLE,
+					DBConstant.UERNAME,
+					DBConstant.PASSWORD).getConnection().createStatement().
+					executeQuery(String.format(
+							" INSERT INTO MEMBER (MEM_ID, NAME, PASSWORD) VALUES ( '%s', '%s', '%s') ",
+							mm.getMemId(),mm.getName(),mm.getPassword()));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
 	public List<MemberBean> selectList() {
 		List<MemberBean> lst = null;
-		try {
+	/*	try {
 			ResultSet rs = stmt.executeQuery("");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}*/
 
 		return lst;
 	}
@@ -56,9 +50,28 @@ public class MemberDAOImpl implements MemberDAO {
 	}
 
 	@Override
-	public MemberBean selectOneList(String member) {
-		// TODO Auto-generated method stub
-		return null;
+	public boolean selectOneList(MemberBean mm) {
+		boolean flag=true;
+		try {
+			ResultSet rs=DatabaseFactory.createDatabase(
+					Vendor.ORACLE,
+					DBConstant.UERNAME,
+					DBConstant.PASSWORD).getConnection().createStatement().
+					executeQuery(String.format(
+							" SELECT MEM_ID ADMINID , " +
+					" TEAM_ID TEAMID ," + " NAME , " +
+									" SSN ," + " ROLL, " + " PASSWORD "	+
+					" FROM MEMBER " + " WHERE MEM_ID LIKE  '%s'   ",
+							mm.getMemId()));
+			while(rs.next()) {
+				flag=false;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		if(flag==true) {MemberServiceImpl.getInstance().createMemId(mm);}
+		return flag;
+		
 	}
 
 	@Override
@@ -82,12 +95,18 @@ public class MemberDAOImpl implements MemberDAO {
 	@Override
 	public MemberBean login(MemberBean bean) {
 		MemberBean mem=null;
-		try {
-			String sql = String.format(
-					" SELECT MEM_ID ADMINID , " + " TEAM_ID TEAMID ," + " NAME , " + " SSN ," + " ROLL, " + " PASSWORD "
-							+ " FROM MEMBER " + " WHERE MEM_ID LIKE  '%s'  AND  PASSWORD  LIKE  '%s' ",
-					bean.getMemId(), bean.getPassword());
-			ResultSet rs = stmt.executeQuery(sql);
+
+		try {ResultSet rs = DatabaseFactory.createDatabase(
+				Vendor.ORACLE,
+				DBConstant.UERNAME,
+				DBConstant.PASSWORD)
+				.getConnection().createStatement().
+				executeQuery(String.format(
+						" SELECT MEM_ID ADMINID , " +
+				" TEAM_ID TEAMID ," + " NAME , " +
+								" SSN ," + " ROLL, " + " PASSWORD "	+
+				" FROM MEMBER " + " WHERE MEM_ID LIKE  '%s'  AND  PASSWORD  LIKE  '%s' ",
+						bean.getMemId(), bean.getPassword()));
 			while (rs.next()) {
 				mem=new MemberBean();
 				mem.setMemId(rs.getString("ADMINID"));
@@ -101,7 +120,6 @@ public class MemberDAOImpl implements MemberDAO {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
 		return mem;
 	}
 

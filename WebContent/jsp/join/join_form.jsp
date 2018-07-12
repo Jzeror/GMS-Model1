@@ -11,8 +11,10 @@ memId, ssn, name, roll, teamId, password;
  </head>
  <body>
  	<form action="join_result.jsp">
- 		아이디 : <input type="text" name="memid"/>
- 		
+ 		아이디 : <input type="text" name="memid"/><br>
+ 		이름 : <input type="text" name="name" /><br>
+ 		비밀번호 : <input type="text" name="password" />
+ 		<input type="submit" />
  	</form>
  </body>
  </html>

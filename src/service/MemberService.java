@@ -5,13 +5,13 @@ import java.util.List;
 import domain.MemberBean;
 
 public interface MemberService {
-	public void createName(String input);
+	public void createMemId(MemberBean mm);
 
 	public List<MemberBean> showAllList();
 
 	public List<MemberBean> showSomeList(String word);
 
-	public MemberBean showOneList(String word);
+	public boolean showOneList(MemberBean mm);
 
 	public int showCountList();
 

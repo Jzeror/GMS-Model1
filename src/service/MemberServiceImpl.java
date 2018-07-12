@@ -17,8 +17,8 @@ public class MemberServiceImpl implements MemberService{
 	}
 	private MemberServiceImpl() {}
 	@Override
-	public void createName(String input) {
-		MemberDAOImpl.getInstance().insertName(input);
+	public void createMemId(MemberBean mm) {
+		MemberDAOImpl.getInstance().insertMemId(mm);
 	}
 	@Override
 	public List<MemberBean> showAllList() {
@@ -31,9 +31,9 @@ public class MemberServiceImpl implements MemberService{
 		return null;
 	}
 	@Override
-	public MemberBean showOneList(String word) {
-		// TODO Auto-generated method stub
-		return null;
+	public boolean showOneList(MemberBean mm) {
+		return MemberDAOImpl.getInstance().selectOneList(mm);
+		
 	}
 	@Override
 	public int showCountList() {

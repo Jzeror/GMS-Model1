@@ -26,11 +26,12 @@
 			<td id="main-tab-layout-td" align="center"><img
 				src="img/home/htm_20150216175457142.jpg" alt="" /></td>
 			<td align="center">
-				<ul>
-					<li><a href="jsp/login/user_login.jsp">사용자로그인</a></li>
+				
+				 <ul>
+					<li><a href="jsp/login/user_login.jsp">사용자로그인 </a><a href="jsp/join/join_form.jsp"> 사용자가입</a></li>
 					<li><a href="jsp/login/admin_login_form.jsp">관리자로그인</a></li>
 			<li><%=c %></li>
-				</ul>
+				</ul> 
 			</td>
 		</tr>
 		<tr class="height-140">
