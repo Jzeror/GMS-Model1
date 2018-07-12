@@ -25,7 +25,7 @@
 				<input type="text" name="adminid"/>
 				<br>
 				admin-pass:<br>
-				<input type="text" name="adminpass"> 
+				<input type="password" name="adminpass"> 
 				<br><br>
 				<input type="submit" value="저언송" >
 			</form>

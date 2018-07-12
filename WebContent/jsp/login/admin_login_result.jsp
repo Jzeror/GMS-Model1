@@ -18,13 +18,12 @@
 		MemberBean m = new MemberBean();
 		m.setMemId(request.getParameter("adminid"));
 		m.setPassword(request.getParameter("adminpass"));
-		m = MemberServiceImpl.getInstance().login(m);
-	if(m.getName()==null){
-	%>안됨<%
+		
+	if(MemberServiceImpl.getInstance().login(m)){
+	%>성공<%
 	}else{
 		%> 
-			회원이름 : <%= m.getName()%> <br />
-			회원아이디 : <%= m.getMemId() %>
+	실패
 		<%
 	}
 	%>

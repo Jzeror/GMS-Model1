@@ -8,26 +8,45 @@ import java.sql.Statement;
 import java.util.List;
 
 import domain.MemberBean;
+import pool.DBConstant;
 
-
-public class MemberDAOImpl implements MemberDAO{
+public class MemberDAOImpl implements MemberDAO {
+	Statement stmt;
+	Connection conn;
 	private static MemberDAO instance = new MemberDAOImpl();
+
 	public static MemberDAO getInstance() {
 		return instance;
 	}
-	private MemberDAOImpl() {}
-	
-	
+	private MemberDAOImpl() {
+		try {
+			Class.forName(DBConstant.DB_DRIVER);
+			conn = DriverManager.getConnection(DBConstant.CONNECTION_URL,
+					DBConstant.UERNAME, DBConstant.PASSWORD);
+			stmt = conn.createStatement();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
 	@Override
 	public void insertName(String name) {
 		System.out.println(name);
-		
+
 	}
 
 	@Override
 	public List<MemberBean> selectList() {
-		// TODO Auto-generated method stub
-		return null;
+		List<MemberBean> lst = null;
+		try {
+			ResultSet rs = stmt.executeQuery("");
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return lst;
 	}
 
 	@Override
@@ -51,44 +70,39 @@ public class MemberDAOImpl implements MemberDAO{
 	@Override
 	public void update(MemberBean member) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void delete(MemberBean member) {
 		// TODO Auto-generated method stub
-		
+
 	}
+
 	@Override
 	public MemberBean login(MemberBean bean) {
-		/* "oracle.jdbc.driver.OracleDriver" 
-		 "jdbc:oracle:thin:@localhost:1521:xe" 
-		 "jzero" 
-		 "fbworud0" */
-				
+		MemberBean mem=null;
 		try {
-			Class.forName("oracle.jdbc.driver.OracleDriver");
-			Connection conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","jzero","fbworud0");
 			String sql = String.format(
-					" SELECT MEM_ID ADMINID , " + " TEAM_ID TEAMID ," + " NAME , " + " AGE ," + " ROLL, " + " PASSWORD "
+					" SELECT MEM_ID ADMINID , " + " TEAM_ID TEAMID ," + " NAME , " + " SSN ," + " ROLL, " + " PASSWORD "
 							+ " FROM MEMBER " + " WHERE MEM_ID LIKE  '%s'  AND  PASSWORD  LIKE  '%s' ",
 					bean.getMemId(), bean.getPassword());
-			Statement stmt = conn.createStatement();
 			ResultSet rs = stmt.executeQuery(sql);
-			while(rs.next()) {
-				bean.setMemId(rs.getString("ADMINID"));
-				bean.setTeamId(rs.getString("TEAMID"));
-				bean.setName(rs.getString("NAME"));
-				bean.setAge(rs.getString("AGE"));
-				bean.setRoll(rs.getString("ROLL"));
-				bean.setPassword(rs.getString("PASSWORD"));
+			while (rs.next()) {
+				mem=new MemberBean();
+				mem.setMemId(rs.getString("ADMINID"));
+				mem.setTeamId(rs.getString("TEAMID"));
+				mem.setName(rs.getString("NAME"));
+				mem.setSsn(rs.getString("SSN"));
+				mem.setRoll(rs.getString("ROLL"));
+				mem.setPassword(rs.getString("PASSWORD"));
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} 
+		}
 
-		return bean;
+		return mem;
 	}
 
 }

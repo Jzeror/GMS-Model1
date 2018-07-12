@@ -19,5 +19,5 @@ public interface MemberService {
 
 	public void removeMember(String member);
 	
-	public MemberBean login(MemberBean member);
+	public boolean login(MemberBean member);
 }
