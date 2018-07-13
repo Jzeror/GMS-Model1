@@ -51,10 +51,16 @@ public class MemberServiceImpl implements MemberService{
 		
 	}
 	@Override
-	public boolean login(MemberBean member) {
-		boolean flag = false;
-		if(MemberDAOImpl.getInstance().login(member)!=null) {flag=true;}
-		return flag;
+	public MemberBean login(MemberBean member) {
+	
+		
+		return MemberDAOImpl.getInstance().login(member);
+	}
+	@Override
+	public void createAge(MemberBean mm) {
+			 mm.setAge(String.valueOf(
+					119 - Integer.parseInt(mm.getSsn().substring(0,2))));
+			 MemberServiceImpl.getInstance().createMemId(mm);
 	}
 }
 

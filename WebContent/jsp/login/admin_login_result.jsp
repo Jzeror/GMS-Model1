@@ -19,10 +19,12 @@
 		m.setMemId(request.getParameter("adminid"));
 		m.setPassword(request.getParameter("adminpass"));
 		
-	if(MemberServiceImpl.getInstance().login(m)){
-	%>성공<%
+	if(MemberServiceImpl.getInstance().login(m).getAge()!="999"){
+	%>
+	성공
+	<%
 	}else{
-		%> 
+	%> 
 	실패
 		<%
 	}

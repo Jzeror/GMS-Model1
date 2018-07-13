@@ -20,7 +20,7 @@ public List<String> list() {
 	List<String> list = new ArrayList();
 
 	try {
-		Class.forName(DBConstant.DB_DRIVER);
+		Class.forName(DBConstant.ORACLE_DRIVER);
 		Connection conn = DriverManager.getConnection(DBConstant.CONNECTION_URL,DBConstant.UERNAME,DBConstant.PASSWORD);
 		Statement stmt = conn.createStatement();
 		String sql = "SELECT AGE FROM MEMBER ";

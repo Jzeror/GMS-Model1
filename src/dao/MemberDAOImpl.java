@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import domain.MemberBean;
+import enums.MemberQuery;
 import enums.Vendor;
 import factory.DatabaseFactory;
 import pool.DBConstant;
@@ -12,19 +13,20 @@ import service.MemberServiceImpl;
 
 public class MemberDAOImpl implements MemberDAO {
 	private static MemberDAO instance = new MemberDAOImpl();
-	public static MemberDAO getInstance() {return instance;}
-	private MemberDAOImpl() {}
+
+	public static MemberDAO getInstance() {
+		return instance;
+	}
+
+	private MemberDAOImpl() {
+	}
 
 	@Override
 	public void insertMemId(MemberBean mm) {
 		try {
-			DatabaseFactory.createDatabase(
-					Vendor.ORACLE,
-					DBConstant.UERNAME,
-					DBConstant.PASSWORD).getConnection().createStatement().
-					executeQuery(String.format(
-							" INSERT INTO MEMBER (MEM_ID, NAME, PASSWORD) VALUES ( '%s', '%s', '%s') ",
-							mm.getMemId(),mm.getName(),mm.getPassword()));
+			DatabaseFactory.createDatabase(Vendor.ORACLE, DBConstant.UERNAME, DBConstant.PASSWORD).getConnection()
+					.createStatement().executeUpdate(String.format(MemberQuery.INSERT_MEMBER.toString(), mm.getMemId(),
+							mm.getName(), mm.getPassword(), mm.getSsn(), mm.getAge()));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -33,12 +35,10 @@ public class MemberDAOImpl implements MemberDAO {
 	@Override
 	public List<MemberBean> selectList() {
 		List<MemberBean> lst = null;
-	/*	try {
-			ResultSet rs = stmt.executeQuery("");
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}*/
+		/*
+		 * try { ResultSet rs = stmt.executeQuery(""); } catch (Exception e) { // TODO
+		 * Auto-generated catch block e.printStackTrace(); }
+		 */
 
 		return lst;
 	}
@@ -51,27 +51,24 @@ public class MemberDAOImpl implements MemberDAO {
 
 	@Override
 	public boolean selectOneList(MemberBean mm) {
-		boolean flag=true;
+		boolean flag = true;
+
 		try {
-			ResultSet rs=DatabaseFactory.createDatabase(
-					Vendor.ORACLE,
-					DBConstant.UERNAME,
-					DBConstant.PASSWORD).getConnection().createStatement().
-					executeQuery(String.format(
-							" SELECT MEM_ID ADMINID , " +
-					" TEAM_ID TEAMID ," + " NAME , " +
-									" SSN ," + " ROLL, " + " PASSWORD "	+
-					" FROM MEMBER " + " WHERE MEM_ID LIKE  '%s'   ",
-							mm.getMemId()));
-			while(rs.next()) {
-				flag=false;
+			ResultSet rs = DatabaseFactory.createDatabase(Vendor.ORACLE, DBConstant.UERNAME, DBConstant.PASSWORD)
+					.getConnection().createStatement()
+					.executeQuery(String.format(MemberQuery.CONFIRM_ID.toString(), mm.getMemId()));
+			while (rs.next()) {
+				flag = false;
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		if(flag==true) {MemberServiceImpl.getInstance().createMemId(mm);}
+		if (flag == true) {
+			MemberServiceImpl.getInstance().createAge(mm);
+
+		}
 		return flag;
-		
+
 	}
 
 	@Override
@@ -94,32 +91,22 @@ public class MemberDAOImpl implements MemberDAO {
 
 	@Override
 	public MemberBean login(MemberBean bean) {
-		MemberBean mem=null;
-
-		try {ResultSet rs = DatabaseFactory.createDatabase(
-				Vendor.ORACLE,
-				DBConstant.UERNAME,
-				DBConstant.PASSWORD)
-				.getConnection().createStatement().
-				executeQuery(String.format(
-						" SELECT MEM_ID ADMINID , " +
-				" TEAM_ID TEAMID ," + " NAME , " +
-								" SSN ," + " ROLL, " + " PASSWORD "	+
-				" FROM MEMBER " + " WHERE MEM_ID LIKE  '%s'  AND  PASSWORD  LIKE  '%s' ",
-						bean.getMemId(), bean.getPassword()));
-			while (rs.next()) {
-				mem=new MemberBean();
-				mem.setMemId(rs.getString("ADMINID"));
-				mem.setTeamId(rs.getString("TEAMID"));
-				mem.setName(rs.getString("NAME"));
-				mem.setSsn(rs.getString("SSN"));
-				mem.setRoll(rs.getString("ROLL"));
-				mem.setPassword(rs.getString("PASSWORD"));
+		MemberBean mem = null;
+			try {
+				ResultSet rs = DatabaseFactory.createDatabase(Vendor.ORACLE, DBConstant.UERNAME, DBConstant.PASSWORD)
+						.getConnection().createStatement()
+						.executeQuery(String.format(MemberQuery.LOGIN.toString(), bean.getMemId(), bean.getPassword()));
+				if(rs.next()) {
+					mem = new MemberBean();
+					mem.setAge(rs.getString("AGE"));
+				}else {
+						mem = new MemberBean();
+					mem.setAge("999");
+				}
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		return mem;
 	}
 
