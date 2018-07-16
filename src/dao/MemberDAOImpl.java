@@ -1,6 +1,10 @@
 package dao;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -73,19 +77,48 @@ public class MemberDAOImpl implements MemberDAO {
 
 	@Override
 	public int countAccount() {
-		// TODO Auto-generated method stub
-		return 0;
+		int count = 0;
+		try {
+		ResultSet rs= DatabaseFactory
+		.createDatabase(Vendor.ORACLE, DBConstant.UERNAME, DBConstant.PASSWORD)
+		.getConnection()
+		.createStatement()
+		.executeQuery(MemberQuery.COUNT_MEMBER.toString());
+		
+		while(rs.next()) {
+			count = rs.getInt("count");
+		}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return count;
 	}
 
 	@Override
 	public void update(MemberBean member) {
-		// TODO Auto-generated method stub
+
+		try {
+			DatabaseFactory.createDatabase(Vendor.ORACLE, DBConstant.UERNAME, DBConstant.PASSWORD)
+			.getConnection().createStatement().executeUpdate(String.format(MemberQuery.UPDATE.toString(), member.getPassword().split("/")[1],member.getPassword().split("/")[0],member.getMemId()));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 	}
 
 	@Override
 	public void delete(MemberBean member) {
-		// TODO Auto-generated method stub
+
+		try {
+			DatabaseFactory.createDatabase(Vendor.ORACLE, DBConstant.UERNAME, DBConstant.PASSWORD)
+			.getConnection().createStatement().executeUpdate(String.format(MemberQuery.DELETE.toString(), member.getPassword(),member.getMemId()));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 
 	}
 

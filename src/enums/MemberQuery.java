@@ -1,7 +1,7 @@
 package enums;
 
 public enum MemberQuery {
-	LOGIN,INSERT_MEMBER,CONFIRM_ID;
+	LOGIN,INSERT_MEMBER,CONFIRM_ID,COUNT_MEMBER,UPDATE,DELETE;
 	@Override
 	public String toString() {
 		String query = "";
@@ -19,7 +19,17 @@ public enum MemberQuery {
 			query = " SELECT MEM_ID ADMINID " 	+
 	" FROM MEMBER " + " WHERE MEM_ID LIKE  '%s'   ";
 			break;
+		case COUNT_MEMBER : 
+			query = "SELECT COUNT(*) AS count FROM MEMBER";
+			break;
+		case UPDATE : 
+			query = "UPDATE MEMBER SET PASSWORD = '%s' "
+					+ " WHERE PASSWORD LIKE '%s' AND MEM_ID LIKE '%s' ";
+			break;
+		case DELETE : 
+			query = "DELETE FROM MEMBER WHERE PASSWORD LIKE '%s' AND MEM_ID LIKE '%s' ";
 		}
+		
 		return query;
 	}
 }

@@ -15,9 +15,9 @@ public interface MemberService {
 
 	public int showCountList();
 
-	public void modifyMember(String member);
+	public void modifyMember(MemberBean member);
 
-	public void removeMember(String member);
+	public void removeMember(MemberBean member);
 	
 	public MemberBean login(MemberBean member);
 	

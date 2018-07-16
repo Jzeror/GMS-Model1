@@ -37,17 +37,16 @@ public class MemberServiceImpl implements MemberService{
 	}
 	@Override
 	public int showCountList() {
-		// TODO Auto-generated method stub
-		return 0;
+		return MemberDAOImpl.getInstance().countAccount();
 	}
 	@Override
-	public void modifyMember(String member) {
-		// TODO Auto-generated method stub
+	public void modifyMember(MemberBean member) {
+		MemberDAOImpl.getInstance().update(member);
 		
 	}
 	@Override
-	public void removeMember(String member) {
-		// TODO Auto-generated method stub
+	public void removeMember(MemberBean member) {
+		MemberDAOImpl.getInstance().delete(member);
 		
 	}
 	@Override

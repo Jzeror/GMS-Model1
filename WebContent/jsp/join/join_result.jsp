@@ -23,6 +23,9 @@
 	<form action="../login/admin_login_form.jsp">
 	<input type="submit" value ="로그인하러 가기"/>
 	</form>
+		<form action="../../main.jsp">
+	<input type="submit" value ="메인으로 가기"/>
+	</form>
 	
 	
 	<% }else{ %>중복된 아이디<%} %>

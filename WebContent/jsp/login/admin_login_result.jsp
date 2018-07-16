@@ -22,10 +22,18 @@
 	if(MemberServiceImpl.getInstance().login(m).getAge()!="999"){
 	%>
 	성공
+		</form>
+		<form action="../../main.jsp">
+	<input type="submit" value ="메인으로 가기"/>
+	</form>
 	<%
 	}else{
 	%> 
 	실패
+		</form>
+		<form action="../../main.jsp">
+	<input type="submit" value ="메인으로 가기"/>
+	</form>
 		<%
 	}
 	%>
